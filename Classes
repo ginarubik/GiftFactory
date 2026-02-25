@@ -1,0 +1,106 @@
+public abstract class Gift {
+
+    private String name;
+    private int recommendedAge;
+    private boolean wrapped;
+    private boolean approved;
+
+    public Gift(String name, int recommendedAge) {
+        if (recommendedAge < 0 || recommendedAge > 18) {
+            throw new IllegalArgumentException("Recommended age must be between 0 and 18.");
+        }
+        this.name = name;
+        this.recommendedAge = recommendedAge;
+        this.wrapped = false;
+        this.approved = false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getRecommendedAge() {
+        return recommendedAge;
+    }
+
+    public boolean isWrapped() {
+        return wrapped;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void wrap() {
+        this.wrapped = true;
+    }
+
+    public void approve() {
+        this.approved = true;
+    }
+
+    @Override
+    public String toString() {
+        return name +
+                " (age " + recommendedAge + ")" +
+                " | Wrapped: " + wrapped +
+                " | Approved: " + approved;
+    }
+}
+
+public class Toy extends Gift {
+
+    public enum ToyType {
+        PLUSH_ANIMAL,
+        BOARD_GAME
+    }
+
+    private ToyType type;
+
+    public Toy(String name, ToyType type, int recommendedAge) {
+        super(name, recommendedAge);
+        this.type = type;
+    }
+
+    public ToyType getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return "Toy: " + getName() +
+                " | Type: " + type +
+                " | Age: " + getRecommendedAge() +
+                " | Wrapped: " + isWrapped() +
+                " | Approved: " + isApproved();
+    }
+}
+
+public class Book extends Gift {
+
+    private int pages;
+
+    public Book(String name, int pages, int recommendedAge) {
+        super(name, recommendedAge);
+
+        if (pages < 4 || pages > 10000) {
+            throw new IllegalArgumentException("Pages must be between 4 and 10000.");
+        }
+
+        this.pages = pages;
+    }
+
+    public int getPages() {
+        return pages;
+    }
+
+    @Override
+    public String toString() {
+        return "Book: " + getName() +
+                " | Pages: " + pages +
+                " | Age: " + getRecommendedAge() +
+                " | Wrapped: " + isWrapped() +
+                " | Approved: " + isApproved();
+    }
+}
+
