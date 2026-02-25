@@ -1,0 +1,24 @@
+public class Main {
+    public static void main(String[] args) {
+
+        SantaClaus santa = new SantaClaus();
+        Elf elf1 = new Elf("Elrond");
+
+        Gift toy1 = new Toy("Teddy Bear", Toy.ToyType.PLUSH_ANIMAL, 3);
+        Gift toy2 = new Toy("Monopoly", Toy.ToyType.BOARD_GAME, 8);
+        Gift book1 = new Book("Harry Potter", 350, 10);
+
+        elf1.receiveGift(toy1);
+        elf1.receiveGift(toy2);
+        elf1.receiveGift(book1);
+
+        elf1.wrapGifts();
+        elf1.passToSanta(santa);
+
+        santa.approveGifts();
+
+        elf1.fillTheSack();
+
+        elf1.printStoredGifts(); // Should be empty
+    }
+}
