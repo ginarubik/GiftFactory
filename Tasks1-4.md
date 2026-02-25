@@ -84,4 +84,33 @@ Quit
 You can safely assume that there will be NO invalid input commands. There will be NO 
 duplicate names for the Elves and the Gifts. There will be NO nonexistent elf names in the 
 commands.
-
+TASK 3: ENCAPSULATING THE DATA 
+Make sure no data is revealed completely, unless it is absolutely needed for it to be. Make sure 
+you hide all data and also make sure that the input data follows the rules, specified in TASK 2 
+and in the example. 
+TASK 4: PRESENTING THE OUTPUT 
+No output should be printed as the result of executing commands. 
+The only output you should print is when you receive the "Quit" command. Then you should 
+print the following: 
+* Santa's Gift Factory *  
+Elves: {number of elves} 
+Gifts in the sack: {number of gifts in Santa's sack} 
+Gifts awaiting wrapping: {number of gifts waiting for wrapping} 
+Gifts awaiting Santa's approval: {number of gifts waiting for approval} 
+HO-HO-HO! Merry Christmas! 
+You need to print the number of all hired elves. 
+You need to print the number of all prepared gifts transferred to Santa's sack. 
+You need to print the number of all unwrapped gifts waiting at the elves' desks. 
+You need to print the number of all wrapped but unapproved gifts, waiting in Santa's room to 
+be covered with magic dust. 
+INPUT 
+ the input will come in the form of commands, in the format specified above 
+ the input sequence ends when the command “Quit” is received 
+OUTPUT 
+ the only output you need to print is the final one, when the input sequence ends 
+CONSTRAINTS 
+ the names of the elves and the gifts can consist of any ASCII characters 
+ the input numbers (number of pages, recommended age) will be valid integers in range 
+[0, 231 – 1] 
+ you can safely assume that all commands will follow the format specified above 
+ you can safely assume there will be NO duplicate names for the elves or the gifts
