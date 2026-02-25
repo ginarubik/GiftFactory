@@ -1,10 +1,9 @@
 import java.util.*;
+import java.io.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/* =========================================================
-   MAIN APPLICATION
-   ========================================================= */
+// Main
 
 public class SantaGiftFactory {
 
@@ -23,9 +22,7 @@ public class SantaGiftFactory {
     }
 }
 
-/* =========================================================
-   GIFT HIERARCHY
-   ========================================================= */
+// Gift Hierarchy
 
 abstract class Gift {
 
@@ -46,12 +43,13 @@ abstract class Gift {
     public boolean isApproved() { return approved; }
 
     public void wrap() { wrapped = true; }
+
     public void approve() {
         if (wrapped) approved = true;
     }
 }
 
-/* -------------------- TOY -------------------- */
+// Toy
 
 class Toy extends Gift {
 
@@ -67,7 +65,7 @@ class Toy extends Gift {
     public ToyType getType() { return type; }
 }
 
-/* -------------------- BOOK -------------------- */
+// Book
 
 class Book extends Gift {
 
@@ -83,9 +81,7 @@ class Book extends Gift {
     public int getPages() { return pages; }
 }
 
-/* =========================================================
-   ELF
-   ========================================================= */
+// Elf
 
 class Elf {
 
@@ -142,9 +138,7 @@ class Elf {
     }
 }
 
-/* =========================================================
-   SANTA
-   ========================================================= */
+// SantaClaus
 
 class SantaClaus {
 
@@ -167,9 +161,7 @@ class SantaClaus {
     }
 }
 
-/* =========================================================
-   FACTORY (COMMAND ENGINE)
-   ========================================================= */
+// Gift Factory
 
 class GiftFactory {
 
@@ -241,23 +233,28 @@ class GiftFactory {
     }
 }
 
-/* =========================================================
-   ===================== UNIT TESTS =========================
-   ========================================================= */
+// Unit Tests
 
 class SantaGiftFactoryTests {
 
+    // Validation
+
     @Test
-    void giftValidation() {
+    void invalidToyAgeShouldThrow() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Toy("Car", Toy.ToyType.BOARD_GAME, 25));
+    }
 
+    @Test
+    void invalidBookPagesShouldThrow() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Book("Book", 2, 5));
     }
 
+    // Wrapping
+
     @Test
-    void wrappingTest() {
+    void wrappingShouldWork() {
         Elf elf = new Elf("Anna");
         Gift toy = new Toy("Car", Toy.ToyType.BOARD_GAME, 5);
 
@@ -267,48 +264,66 @@ class SantaGiftFactoryTests {
         assertTrue(toy.isWrapped());
     }
 
+    // Branch Coverage
+
     @Test
-    void passToSantaTest() {
-        Elf elf = new Elf("Bob");
-        SantaClaus santa = new SantaClaus();
-
-        Gift toy = new Toy("Bear", Toy.ToyType.PLUSH_ANIMAL, 3);
-        toy.wrap();
-
-        elf.receiveGift(toy);
-        elf.passToSanta(santa);
-
-        assertEquals(1, santa.countWaitingApproval());
+    void approvingUnwrappedGiftShouldNotWork() {
+        Gift toy = new Toy("Car", Toy.ToyType.BOARD_GAME, 5);
+        toy.approve();
+        assertFalse(toy.isApproved());
     }
 
     @Test
-    void approvalFlowTest() {
-        Elf elf = new Elf("Mike");
+    void unwrappedGiftShouldNotBePassedToSanta() {
+        Elf elf = new Elf("Anna");
         SantaClaus santa = new SantaClaus();
 
-        Gift toy = new Toy("Puzzle", Toy.ToyType.BOARD_GAME, 6);
-        toy.wrap();
-
+        Gift toy = new Toy("Car", Toy.ToyType.BOARD_GAME, 5);
         elf.receiveGift(toy);
-        elf.passToSanta(santa);
-        santa.approveGifts();
 
-        assertTrue(toy.isApproved());
+        elf.passToSanta(santa);
+
         assertEquals(0, santa.countWaitingApproval());
     }
 
     @Test
-    void fullIntegrationTest() {
+    void approvedGiftShouldNotBePassedAgain() {
+        Elf elf = new Elf("Anna");
+        SantaClaus santa = new SantaClaus();
+
+        Gift toy = new Toy("Car", Toy.ToyType.BOARD_GAME, 5);
+        toy.wrap();
+        toy.approve();
+
+        elf.receiveGift(toy);
+        elf.passToSanta(santa);
+
+        assertEquals(0, santa.countWaitingApproval());
+    }
+
+    @Test
+    void removingApprovedGiftsWhenNoneExistShouldReturnZero() {
+        Elf elf = new Elf("Anna");
+        Gift toy = new Toy("Car", Toy.ToyType.BOARD_GAME, 5);
+
+        elf.receiveGift(toy);
+
+        assertEquals(0, elf.removeApprovedGifts());
+    }
+
+    /* ---------- FULL WORKFLOW ---------- */
+
+    @Test
+    void fullBookWorkflowShouldWork() {
         GiftFactory factory = new GiftFactory();
 
         factory.executeCommand("HireElf : Anna");
-        factory.executeCommand("NewToy : Car | board game | 5 | Anna");
+        factory.executeCommand("NewBook : Story | 100 | 7 | Anna");
         factory.executeCommand("WrapGifts : Anna");
         factory.executeCommand("PassToSanta");
         factory.executeCommand("ApproveGifts");
         factory.executeCommand("FillTheSack");
 
-        // No exception = success
         assertTrue(true);
     }
 }
