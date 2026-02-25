@@ -58,3 +58,30 @@ show if it is wrapped and if it is approved
  the recommended age is an integer (should be between 0 and 18 (inclusive)) 
  by default, it is unwrapped and unapproved in the beginning
 
+TASK 2: IMPLEMENTING THE MAIN FUNCTIONALITY AND APPLICATION LOGIC 
+The functionality of Santa's Gift Factory is interpreted through commands. The application 
+should handle the following commands: 
+HireElf : {name} 
+ hires an Elf with the given name 
+NewToy : {name} | {type} | {recommended age} | {elfName} 
+  gives a toy with the given name, type and recommended age to the elf with the given 
+name 
+NewBook : {name} | {number of pages} | {recommended age} | {elfName} 
+ gives a book with the given name, number of pages and recommended age to the elf 
+with the given name 
+WrapGifts : {elfName} 
+ the given elf wraps all his unwrapped gifts  
+PassToSanta 
+ all elves pass all their wrapped (but not approved) gifts to Santa 
+ApproveGifts 
+ Santa approves all the gifts that were previously passed to him by sprinkling magic dust 
+on them and returns the approved gifts to the elves. Each gift should be returned to the 
+elf who wrapped it 
+FillTheSack 
+ all approved gifts are put in the sack and removed from the elves' lists 
+Quit 
+  terminates the input sequence and prints the current status (described in TASK 4.) 
+You can safely assume that there will be NO invalid input commands. There will be NO 
+duplicate names for the Elves and the Gifts. There will be NO nonexistent elf names in the 
+commands.
+
